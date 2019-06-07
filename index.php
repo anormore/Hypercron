@@ -111,7 +111,9 @@ if($refillQue == "empty"){
 		$theCourse->courseid = $course->id;
 		$theCourse->timeadded = time();
 
-		$lastinsertid = $DB->insert_record('hypercron_courseque', $theCourse, false);
+		if($theCourse->courseid != 1){ // 1 is the homepage, skip this
+			$lastinsertid = $DB->insert_record('hypercron_courseque', $theCourse, false);
+		}
 
 		$channelCount++;
 		if($channelCount >= 5){
@@ -274,7 +276,7 @@ for($selectedQueChannel = 1; $selectedQueChannel <= 4; $selectedQueChannel++){
 			debugMessage ("p","=== COURSE ID: ".$theCourse->courseid." ============");
 			debugMessage ("p","===========================");
 
-			$courses = $DB->get_records_sql('SELECT id FROM mdl_course WHERE id='.$theCourse->courseid, array(1));
+			$courses = $DB->get_records_sql('SELECT id FROM {course} WHERE id='.$theCourse->courseid, array(1));
 			if($courses){
 				debugMessage ("p","COURSE FOUND, YOU MAY PROCEED");
 			}else{
@@ -305,7 +307,7 @@ for($selectedQueChannel = 1; $selectedQueChannel <= 4; $selectedQueChannel++){
 				
 
 				debugMessage ("p","clearing qued course");
-				$DB->execute('DELETE FROM mdl_hypercron_courseque WHERE courseid='.$course->id);
+				$DB->execute('DELETE FROM {hypercron_courseque} WHERE courseid='.$course->id);
 
 				$runtimeCourse = "".round( (microtime(true) - $startTimeCourseProcess), 5);
 				$DB->execute("INSERT INTO {hypercron_logs} (time, runtime, amount, type, data) VALUES (".time().", $runtimeCourse, '1', 'course', $course->id)");
@@ -316,7 +318,7 @@ for($selectedQueChannel = 1; $selectedQueChannel <= 4; $selectedQueChannel++){
 
 
 		debugMessage ("p","clearing qued course:".$theLockId);
-		$DB->execute('DELETE FROM mdl_hypercron_coursequelocks WHERE id='.$theLockId);
+		$DB->execute('DELETE FROM {hypercron_coursequelocks} WHERE id='.$theLockId);
 
 		debugMessage ("p", '<hr />');
 		debugMessage ("p", '<h1 style="color:green;">COMPLETED '.$HypercronAmountToProcess.' JOBS SUCCESSFULLY: '.(microtime(true) - $startTime).' seconds</h1>');
@@ -344,7 +346,7 @@ for($selectedQueChannel = 1; $selectedQueChannel <= 4; $selectedQueChannel++){
 		// DIE
 		// DIE
 
-		// We do not want to re-run any logic here, other CRON jobs should be running
+		// We do not want to re-run any logic here, other Hypercron jobs should be running already
 
 	}
 

@@ -1,4 +1,4 @@
-moodle-local_hypercron
+moodle-local_rtms
 ==================
 
 Release notes:
