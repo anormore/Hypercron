@@ -21,12 +21,14 @@
  * @copyright (C) 2019 onwards Yorkville Education Company
  */
 
+defined('MOODLE_INTERNAL') || die();
 
-
-if (is_siteadmin()) {
-    $settings = new admin_settingpage('local_hypercron', get_string('pluginname', 'local_hypercron'));
-    $ADMIN->add('localplugins', $settings);
+if (!$hassiteconfig || !is_siteadmin()){
+    return;
 }
+
+$settings = new admin_settingpage('local_hypercron', get_string('pluginname', 'local_hypercron'));
+$ADMIN->add('localplugins', $settings);
 
 // ---------------------
 $HypercronKey = get_config('local_hypercron', 'key');

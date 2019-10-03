@@ -23,7 +23,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2019000015;
+$plugin->version = 2019100300;
 $plugin->requires = 2017000000;
 $plugin->component = 'local_hypercron';
 $plugin->maturity = MATURITY_STABLE;
